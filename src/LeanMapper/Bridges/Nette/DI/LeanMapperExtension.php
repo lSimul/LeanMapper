@@ -17,24 +17,10 @@ class LeanMapperExtension extends Nette\DI\CompilerExtension
 
 
 
-    /**
-     * Returns extension configuration.
-     * @return array
-     */
-    public function getConfig()
-    {
-        $container = $this->getContainerBuilder();
-        $this->defaults['scanDirs'] = $container->expand('%appDir%');
-
-        return parent::getConfig($this->defaults);
-    }
-
-
-
     public function loadConfiguration()
     {
         $container = $this->getContainerBuilder();
-        $config = $this->getConfig();
+        $config = $this->getMergedConfig();
 
         $index = 1;
         foreach ($this->findRepositories($config) as $repositoryClass) {
@@ -70,15 +56,34 @@ class LeanMapperExtension extends Nette\DI\CompilerExtension
 
 
 
+    /**
+     * Merges the defaults into the config the way nette/di 2.4's getConfig($defaults) did, which nette/di 3 dropped.
+     */
+    private function getMergedConfig(): array
+    {
+        $container = $this->getContainerBuilder();
+        $this->defaults['scanDirs'] = '%appDir%';
+
+        return Nette\DI\Config\Helpers::merge($this->config, Nette\DI\Helpers::expand($this->defaults, $container->parameters));
+    }
+
+
+
     private function findRepositories($config)
     {
         $classes = [];
 
         if ($config['scanDirs']) {
             $robot = new RobotLoader;
-            $robot->setCacheStorage(new Nette\Caching\Storages\DevNullStorage);
-            $robot->addDirectory($config['scanDirs']);
-            $robot->acceptFiles = '*.php';
+            // nette/robot-loader 3+ removed cache storages.
+            if (method_exists($robot, 'setCacheStorage')) {
+                $robot->setCacheStorage(new Nette\Caching\Storages\DevNullStorage);
+            }
+            // nette/robot-loader 4 takes only strings, and 2.4 takes a single argument.
+            foreach ((array) $config['scanDirs'] as $dir) {
+                $robot->addDirectory($dir);
+            }
+            $robot->acceptFiles = ['*.php'];
             $robot->rebuild();
             $classes = array_keys($robot->getIndexedClasses());
         }
