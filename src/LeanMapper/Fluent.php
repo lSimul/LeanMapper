@@ -82,9 +82,6 @@ class Fluent extends \Dibi\Fluent
         $reflector = new \ReflectionClass(get_class($this));
         $parent = $reflector->getParentClass();
         $method = $parent->getMethod('_export');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
         return $method->invokeArgs($this, $args);
     }
 
