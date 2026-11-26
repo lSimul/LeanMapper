@@ -7,23 +7,29 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php: ['8.2', '8.3']
+                php: ['8.2', '8.3', '8.4', '8.5', '8.6']
+                dibi: ['~4.0', '^5.1.2']
+                exclude:
+                    - php: '8.5'
+                      dibi: '~4.0'
+                    - php: '8.6'
+                      dibi: '~4.0'
 
             fail-fast: false
 
-        name: PHP ${{ matrix.php }} tests
+        name: PHP ${{ matrix.php }}, dibi ${{ matrix.dibi }}
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
                   extensions: json, mbstring, tokenizer, sqlite3
                   coverage: none
 
-            - run: composer install --no-interaction
+            - run: composer update --no-interaction --with 'dibi/dibi:${{ matrix.dibi }}'
             - run: vendor/bin/tester tests -s -C
             - if: failure()
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact@v4
               with:
-                  name: output
+                  name: output-${{ matrix.php }}-${{ strategy.job-index }}
                   path: tests/**/output
