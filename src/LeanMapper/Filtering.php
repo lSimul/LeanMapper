@@ -48,7 +48,7 @@ class Filtering
      * @param array|null $targetedArgs
      * @throws InvalidArgumentException
      */
-    public function __construct($filters, array $args = null, Entity $entity = null, Property $property = null, array $targetedArgs = [])
+    public function __construct($filters, ?array $args = null, ?Entity $entity = null, ?Property $property = null, array $targetedArgs = [])
     {
         if (!is_array($filters)) {
             if (!is_string($filters) and !($filters instanceof Closure)) {

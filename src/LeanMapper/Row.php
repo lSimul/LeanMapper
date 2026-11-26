@@ -248,7 +248,7 @@ class Row
      * @param Filtering|null $filtering
      * @return Row|null
      */
-    public function referenced($table, $viaColumn = null, Filtering $filtering = null)
+    public function referenced($table, $viaColumn = null, ?Filtering $filtering = null)
     {
         if (array_key_exists($viaColumn, $this->referencedRows)) {
             return $this->referencedRows[$viaColumn];
@@ -267,7 +267,7 @@ class Row
      * @param string|null $strategy
      * @return Row[]
      */
-    public function referencing($table, $viaColumn = null, Filtering $filtering = null, $strategy = null)
+    public function referencing($table, $viaColumn = null, ?Filtering $filtering = null, $strategy = null)
     {
         return $this->result->getReferencingRows($this->id, $table, $viaColumn, $filtering, $strategy);
     }
@@ -278,7 +278,7 @@ class Row
      * @param Row $row
      * @param string $viaColumn
      */
-    public function setReferencedRow(self $row = null, $viaColumn)
+    public function setReferencedRow(?self $row, $viaColumn)
     {
         $this->referencedRows[$viaColumn] = $row;
     }
@@ -294,7 +294,7 @@ class Row
      * @param Filtering|null $filtering
      * @param string|null $strategy
      */
-    public function addToReferencing(array $values, $table, $viaColumn = null, Filtering $filtering = null, $strategy = null)
+    public function addToReferencing(array $values, $table, $viaColumn = null, ?Filtering $filtering = null, $strategy = null)
     {
         $this->result->addToReferencing($values, $table, $viaColumn, $filtering, $strategy);
     }
@@ -310,7 +310,7 @@ class Row
      * @param Filtering|null $filtering
      * @param string|null $strategy
      */
-    public function removeFromReferencing(array $values, $table, $viaColumn = null, Filtering $filtering = null, $strategy = null)
+    public function removeFromReferencing(array $values, $table, $viaColumn = null, ?Filtering $filtering = null, $strategy = null)
     {
         $this->result->removeFromReferencing($values, $table, $viaColumn, $filtering, $strategy);
     }
@@ -324,7 +324,7 @@ class Row
      * @param string|null $strategy
      * @return DataDifference
      */
-    public function createReferencingDataDifference($table, $viaColumn = null, Filtering $filtering = null, $strategy = null)
+    public function createReferencingDataDifference($table, $viaColumn = null, ?Filtering $filtering = null, $strategy = null)
     {
         return $this->result->createReferencingDataDifference($table, $viaColumn, $filtering, $strategy);
     }
@@ -363,7 +363,7 @@ class Row
      * @param Filtering|null $filtering
      * @param string|null $strategy
      */
-    public function cleanReferencingAddedAndRemovedMeta($table, $viaColumn = null, Filtering $filtering = null, $strategy = null)
+    public function cleanReferencingAddedAndRemovedMeta($table, $viaColumn = null, ?Filtering $filtering = null, $strategy = null)
     {
         $this->result->cleanReferencingAddedAndRemovedMeta($table, $viaColumn, $filtering, $strategy);
     }

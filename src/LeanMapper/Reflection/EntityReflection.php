@@ -50,7 +50,7 @@ class EntityReflection extends \ReflectionClass
      * @param mixed $argument
      * @param IMapper|null $mapper
      */
-    public function __construct($argument, IMapper $mapper = null)
+    public function __construct($argument, ?IMapper $mapper = null)
     {
         parent::__construct($argument);
         $this->mapper = $mapper;

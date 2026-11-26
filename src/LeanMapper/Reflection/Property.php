@@ -99,10 +99,10 @@ class Property
         $hasDefaultValue,
         $defaultValue = null,
         $relationship = null,
-        PropertyMethods $propertyMethods = null,
-        PropertyFilters $propertyFilters = null,
-        PropertyPasses $propertyPasses = null,
-        PropertyValuesEnum $propertyValuesEnum = null,
+        ?PropertyMethods $propertyMethods = null,
+        ?PropertyFilters $propertyFilters = null,
+        ?PropertyPasses $propertyPasses = null,
+        ?PropertyValuesEnum $propertyValuesEnum = null,
         array $customFlags = []
     ) {
         if ($relationship !== null) {
