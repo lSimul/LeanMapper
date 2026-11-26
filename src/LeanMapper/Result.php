@@ -499,7 +499,7 @@ class Result implements \Iterator
             $viaColumn = $this->mapper->getRelationshipColumn($table, $this->table);
         }
         $referencingResult = $this->getReferencingResult($table, $viaColumn, $filtering, $strategy);
-        $resultHash = spl_object_hash($referencingResult);
+        $resultHash = spl_object_id($referencingResult);
         if (!isset($this->index[$resultHash])) {
             $column = $this->isAlias($viaColumn) ? $this->trimAlias($viaColumn) : $viaColumn;
             $this->index[$resultHash] = [];
@@ -543,7 +543,7 @@ class Result implements \Iterator
             $viaColumn = $this->mapper->getRelationshipColumn($table, $this->table);
         }
         $this->referencing["$table($viaColumn)$strategy#" . self::KEY_PRELOADED] = $referencingResult;
-        unset($this->index[spl_object_hash($referencingResult)]);
+        unset($this->index[spl_object_id($referencingResult)]);
     }
 
 
@@ -561,7 +561,7 @@ class Result implements \Iterator
     {
         $result = $this->getReferencingResult($table, $viaColumn, $filtering, $strategy);
         $result->addDataEntry($values);
-        unset($this->index[spl_object_hash($result)]);
+        unset($this->index[spl_object_id($result)]);
     }
 
 
@@ -579,7 +579,7 @@ class Result implements \Iterator
     {
         $result = $this->getReferencingResult($table, $viaColumn, $filtering, $strategy);
         $result->removeDataEntry($values);
-        unset($this->index[spl_object_hash($result)]);
+        unset($this->index[spl_object_id($result)]);
     }
 
 
@@ -634,7 +634,7 @@ class Result implements \Iterator
             foreach ($this->referencing as $key => $value) {
                 $strategies = '(' . self::STRATEGY_IN . '|' . self::STRATEGY_UNION . ')';
                 if (preg_match("~^$table\\($viaColumn\\)$strategies(#.*)?$~", $key)) {
-                    unset($this->index[spl_object_hash($this->referencing[$key])]);
+                    unset($this->index[spl_object_id($this->referencing[$key])]);
                     unset($this->referencing[$key]);
                 }
             }
