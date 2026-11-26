@@ -62,8 +62,9 @@ class ResultDummyDriver implements \Dibi\ResultDriver
     }
 
 
-    public function getResultResource()
+    public function getResultResource(): mixed
     {
+        return null;
     }
 
 
@@ -116,5 +117,13 @@ class PostgreDummyDriver extends \Dibi\Drivers\PostgreDriver
     public function escapeText(string $value): string
     {
         return "'" . strtr($value, ["'" => "\\'"]) . "'";
+    }
+}
+
+class PostgreDummyConnection extends Connection
+{
+    public function __destruct()
+    {
+        // dibi 5's PostgreDriver::getResource() cannot return null and the dummy driver never connects, so there is nothing to free.
     }
 }

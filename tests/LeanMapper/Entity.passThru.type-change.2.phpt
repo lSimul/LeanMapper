@@ -43,6 +43,6 @@ Assert::same(['foo' => 'bar'], $foo->attrs);
 $driver = new PostgreDummyDriver;
 $driver->setResultData('INSERT INTO "foo" ("attrs") VALUES (\'{"foo":"bar"}\')', []);
 $driver->setResultData('SELECT LASTVAL()', [[1]]);
-$connection = new LeanMapper\Connection(['driver' => $driver]);
+$connection = new PostgreDummyConnection(['driver' => $driver]);
 $repository = new FooRepository($connection, $mapper, $entityFactory);
 $repository->persist($foo);
